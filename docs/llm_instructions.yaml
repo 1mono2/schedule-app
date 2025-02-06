@@ -1,0 +1,18 @@
+document_metadata:
+  location: "docs/llm_instruction.yaml"
+
+llm_instructions:
+  system_requirements_file: "docs/requirements/system_requirements.yaml"
+  error_resolution:
+    - "If an error is not resolved, refer back to system_requirements.yaml and review the entire project holistically."
+    - "If the error still persists after that, escalate the issue to a human for resolution."
+  project_overview:
+    file_structure:
+      note: "Always maintain an awareness of the project's entire file structure. Exclude large package directories such as node_modules and .next from consideration."
+  code_references:
+    guidelines_files:
+      - "docs/guidelines/coding_guidelines.yaml"
+      - "docs/guidelines/domain_driven_design_guidelines.yaml"
+      - "docs/guidelines/testing_guidelines.yml"
+      - "docs/guidelines/test_driven_development_guidelines.yaml"
+      - "docs/guidelines/git_branch_strategy.yaml"

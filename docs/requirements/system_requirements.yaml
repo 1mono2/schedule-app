@@ -1,0 +1,93 @@
+document_metadata:
+  last_updated: "2025-02-06"
+  update_policy: "システムの要件定義が変更された場合、このYAMLも必ず変更・更新すること。"
+
+project_overview:
+  name: スケジュール調整アプリ
+  description: >
+    GoogleとMicrosoftのログイン認証、カレンダー連携、複数組織への所属、複雑な日程調整条件設定、
+    APIおよびWebhook連携などを備えた日程調整アプリです。将来的に有償プランへの拡張も視野に入れた設計とします。
+  target_users:
+    - role: Admin
+      description: 組織設定やユーザー管理など、組織に関する操作が可能なユーザー
+    - role: member
+      description: 日程調整機能など、一般的な利用を行うユーザー
+
+security:
+  login_authentication:
+    providers:
+      - Google
+      - Microsoft
+  user_permissions:
+    roles:
+      Admin: "組織設定、ユーザー管理などの操作が可能"
+      member: "基本的な日程調整等の機能利用"
+  calendar_integration:
+    providers:
+      - Google Calendar
+      - Microsoft Calendar
+    usage: "取得した予定情報を日程調整に利用"
+  organization:
+    multi_tenancy: true
+    description: "ユーザーは複数の組織（テナント）に所属可能"
+  invitation:
+    email_invitation: true
+    cancel_invitation:
+      allowed: true
+      cancellation_period: "7日間"
+
+schedule_adjustment:
+  basic_function: "複数の条件設定が可能な日程調整機能"
+  condition_details:
+    participant_conditions:
+      description: >
+        参加者の条件設定。例:
+          - 「Aさん or Bさん」：どちらかが空いていれば候補となる
+          - 「Aさん and Bさん」：両者とも空いている必要がある
+      hierarchical: "A or (B and (C or D)) のような複雑な条件設定が可能"
+    event_duration: "イベントの所要時間"
+    buffer_time: "イベント前後に確保する時間"
+    candidate_schedule:
+      delay_after: "候補提示開始までの時間（例：0時間、12時間、1日後、2日後など）"
+      window: "候補日程の提示期間（例：2週間）"
+    event_creation_window:
+      start_time: "イベント作成可能な開始時間"
+      end_time: "イベント作成可能な終了時間"
+    weekday_holiday_settings:
+      description: "曜日や祝日の場合に予定を入れるかどうかのオンオフ設定"
+  notification:
+    methods:
+      - Email
+      - Slack
+    note: "リマインドはGoogleカレンダーのデフォルト機能を利用"
+  api:
+    description: "API実装、API keyによる管理"
+    endpoints:
+      - get_available_schedule: "予定作成可能時間の取得"
+      - create_schedule: "予定の作成"
+    specifications:
+      api_key:
+        permission_and_expiry: "設定しない"
+      parameters:
+        calendar_id: "条件設定済みのカレンダーIDを指定（参加メンバー、所要時間、バッファ時間、日付範囲等は指定しない）"
+      exposure: "セキュリティが許す限り広い範囲で公開"
+      abuse_protection: "不正利用防止やレートリミットの設定を実施"
+  webhook:
+    implemented: true
+  future_extension:
+    description: "将来的に有償プランへの移行が可能な実装とする"
+
+technical_requirements:
+  frontend:
+    framework: Next.js
+    routing: "API Routerを利用"
+    rendering: "できるだけSSRを活用"
+  database:
+    service: Supabase
+  runtime:
+    engine: Bun
+  authentication:
+    provider: Supabase Auth
+    session_management: JWT
+  serverless_function:
+    framework: Hono

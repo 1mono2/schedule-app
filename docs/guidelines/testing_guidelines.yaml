@@ -1,0 +1,58 @@
+testing_guidelines:
+  title: テストに関する指針
+
+  vitest_component_testing:
+    description: Vitestを使用したコンポーネントテストの手法
+
+    about_vitest:
+      description: Vitestは、Viteと統合された次世代のテストフレームワークです。Jestと互換性のあるAPIを提供し、テストの作成と実行を容易にします。
+
+    prerequisites:
+      note: vitestはglobalにインストールされているため、importする必要はありません。
+
+    mocking:
+      recommendation: vi.spyOn()を使用することを推奨します。これにより、モックの範囲を限定し、テストの可読性と保守性を向上させます。
+
+      examples:
+        spy_on:
+          title: spyOnの使用
+          code: |
+            import * as module from './module';
+
+            test('spyOn example', () => {
+              const spy = vi.spyOn(module, 'functionName');
+              module.functionName();
+              expect(spy).toHaveBeenCalled();
+              spy.mockRestore();
+            });
+
+        property_mock:
+          title: プロパティーのモック
+          code: |
+            import * as module from './module';
+
+            test('spyOn example', () => {
+              const spy = vi.spyOn(module, 'property', 'get').mockImplementation(() => {
+                return "mocked";
+              });
+              expect(module.property).toBe("mocked");
+            });
+
+  best_practices:
+    - name: テストの独立性
+      description: 各テストは他のテストに依存しないように設計します。これにより、テストの実行順序に関係なく、常に一貫した結果が得られます。
+
+    - name: テストの可読性
+      description: テストコードは、実装コードと同様に可読性が重要です。テストの意図が明確になるように、適切な命名とコメントを心がけます。
+
+    - name: テストの範囲
+      description: 各テストは、特定の機能や振る舞いを検証することに集中します。過度に広範囲なテストは避け、必要に応じてテストを分割します。また、正常に動作することを検証する正常系テストと、正常に動作しないことを検証する異常系テストを作成します。
+
+    - name: モックの適切な使用
+      description: モックは、外部依存を排除し、テストの対象に集中するために使用します。ただし、過度なモックはテストの信頼性を損なう可能性があるため、必要最低限に留めます。
+
+  additional_info:
+    note: このガイドラインは、Vitestの特徴を活かしつつ、Jestからの移行をスムーズに行うためのものです。
+    documentation:
+      text: Vitestの詳細な使用方法については、Vitestの公式ドキュメントを参照してください。
+      url: https://vitest.dev/guide/

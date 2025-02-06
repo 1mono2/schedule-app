@@ -1,0 +1,37 @@
+branch_strategy:
+  name: "GitHub Flow"
+  description: >
+    GitHub Flow is a lightweight, branch-based workflow designed for continuous deployment.
+    In this workflow, feature branches are created from the main branch for new developments.
+    Once reviewed and tested, changes are merged back into the main branch, which serves as the integration branch.
+    Finally, the prod branch is updated from main and acts as the release branch for production deployments.
+  branches:
+    main:
+      description: >
+        The main branch holds integration code that has passed code review and CI tests.
+        It serves as the base for feature branch creation and is regularly updated.
+    prod:
+      description: >
+        The prod branch is the release branch.
+        It contains production-ready code that is deployed to live environments.
+        Only thoroughly tested and reviewed changes from main are merged into prod.
+    feature:
+      description: >
+        Feature branches are created off of the main branch to develop new features or bug fixes.
+        They should be short-lived, frequently updated with changes from main, and merged back via pull requests.
+      naming_convention:
+        convention: "feature/<issue-number>-<short-description>"
+        example: "feature/123-add-login"
+        note: "Use lowercase letters and hyphens to separate words. The issue number should reference the associated task or issue."
+  process:
+    - "Create a feature branch from the main branch."
+    - "Develop new features or bug fixes on the feature branch with frequent commits."
+    - "Open a pull request once the feature is complete or at a logical checkpoint."
+    - "Conduct code review and ensure all CI/CD tests pass."
+    - "Merge the pull request into the main branch after approvals."
+    - "Deploy the updated main branch to production."
+  best_practices:
+    - "Keep feature branches short-lived to minimize merge conflicts."
+    - "Regularly rebase feature branches with the main branch to stay up-to-date."
+    - "Ensure all tests pass in the CI/CD pipeline before merging."
+    - "Use clear and descriptive branch names and pull request titles."
