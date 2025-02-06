@@ -80,10 +80,12 @@ schedule_adjustment:
 technical_requirements:
   frontend:
     framework: Next.js
+    ui_framework: "shadcn/ui"
     routing: "API Routerを利用"
     rendering: "できるだけSSRを活用"
   database:
     service: Supabase
+    environment: "Supabase開発環境を使用"
   runtime:
     engine: Bun
   authentication:
