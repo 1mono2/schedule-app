@@ -2,16 +2,16 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, install dependencies:
+First, install dependencies using [Bun](https://bun.sh):
 
 ```bash
-npm install
+bun install
 ```
 
 To run linting:
 
 ```bash
-npm run lint
+bun run lint
 ```
 
 First, run the development server:
