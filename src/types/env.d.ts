@@ -1,6 +1,10 @@
 declare namespace NodeJS {
-  interface ProcessEnv {
-    NEXT_PUBLIC_SUPABASE_URL: string;
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: string;
-  }
+	interface ProcessEnv {
+		POSTGRES_URL: string;
+		AUTH_SECRET: string;
+		AUTH_GOOGLE_ID: string;
+		AUTH_GOOGLE_SECRET: string;
+		MICROSOFT_CLIENT_ID: string;
+		MICROSOFT_CLIENT_SECRET: string;
+	}
 }
