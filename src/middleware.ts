@@ -3,8 +3,9 @@ import { auth } from "@/lib/auth";
 export default auth((request) => {
 	const { nextUrl } = request;
 	const isLoggedIn = !!request.auth;
+	const isAuthRoute = ["/login"].includes(nextUrl.pathname);
 
-	if (!isLoggedIn) {
+	if (!isLoggedIn && !isAuthRoute) {
 		return Response.redirect(new URL("/login", nextUrl));
 	}
 
