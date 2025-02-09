@@ -86,10 +86,11 @@ technical_requirements:
   database:
     service: Supabase
     environment: "Supabase開発環境を使用"
+    orm: "Drizzle"
   runtime:
     engine: Bun
   authentication:
-    provider: Supabase Auth
+    provider: "Auth.js (NextAuth.js v5)"
     session_management: JWT
   serverless_function:
     framework: Hono
