@@ -1,4 +1,8 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Schedule App
+
+## Overview
+A scheduling application featuring Google and Microsoft login authentication, calendar integration, 
+multi-organization membership, complex scheduling condition settings, and API/Webhook integration capabilities.
 
 ## Getting Started
 
@@ -18,6 +22,8 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
      ```bash
      bun install supabase --global
      ```
+     
+     For other installation methods, please check [this link](https://supabase.com/docs/guides/local-development/cli/getting-started?queryGroups=platform&platform=macos&queryGroups=access-method&access-method=postgres)
    - Start Supabase services:
      ```bash
      supabase start
@@ -40,41 +46,16 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
      ```
    - Generate AUTH_SECRET:
      ```bash
-     bunx auth secrets
+     bunx auth secret
      ```
    - Update the following in `.env.local`:
      - `NODE_ENV`: Set to "development"
      - `PORT`: Default is 3000
-     - `AUTH_SECRET`: Paste the generated secret from `bunx auth secrets`
+     - `AUTH_SECRET`: Paste the generated secret from `bunx auth secret`
      - `AUTH_GOOGLE_ID`: Your Google OAuth Client ID
      - `AUTH_GOOGLE_SECRET`: Your Google OAuth Client Secret
      - `AUTH_MICROSOFT_ID`: (Optional) Your Microsoft Azure Application ID
      - `AUTH_MICROSOFT_SECRET`: (Optional) Your Microsoft Azure Client Secret
-
-   Note: The Supabase connection URL will be automatically set up when running `supabase start`
-   - Install Docker Desktop from https://www.docker.com/products/docker-desktop
-   - Install Supabase CLI:
-     ```bash
-     bun install supabase --global
-     ```
-   - Start Supabase services:
-     ```bash
-     supabase start
-     ```
-
-4. **Environment Variables**
-   - Copy the sample environment file:
-     ```bash
-     cp .env.sample .env.local
-     ```
-   - Generate AUTH_SECRET:
-     ```bash
-     bunx auth secrets
-     ```
-   - Update the following in `.env.local`:
-     - `AUTH_SECRET`: Paste the generated secret from `bunx auth secrets`
-     - `AUTH_GOOGLE_ID`: Your Google OAuth Client ID
-     - `AUTH_GOOGLE_SECRET`: Your Google OAuth Client Secret
 
 ### Installation and Development
 
@@ -96,7 +77,8 @@ bun dev  # Uses turbopack for faster development
 bun dev          # Start development server with turbopack
 bun run build    # Create production build
 bun start        # Start production server
-bun run lint     # Run ESLint for code linting
+bun run lint     # Run Biome.js for code linting
+bun run format   # Run Biome.js for code linting & formatting
 ```
 
 ### Project Structure
@@ -105,14 +87,10 @@ bun run lint     # Run ESLint for code linting
 schedule-app/
 ├── app/                # Next.js app directory (pages and components)
 ├── components/         # shadcn/ui components
-├── docs/              # Project documentation
-├── public/            # Static files
-├── server/            # Hono serverless functions
-├── .env.local         # Local environment variables (create this)
-├── next.config.ts     # Next.js configuration
-├── tailwind.config.ts # Tailwind CSS configuration
-├── eslint.config.mjs  # ESLint configuration
-└── tsconfig.json      # TypeScript configuration
+├── docs/               # Project documentation for LLM(AI Agent)
+│   └── guidelines/     # Guidelines for LLM(AI Agent) ex: coding standards, best practices, etc.
+│   └── requirements/   # Requirements
+└──  public/            # Static files
 ```
 
 ### Tech Stack
@@ -139,18 +117,3 @@ schedule-app/
    - Clear .next directory: `rm -rf .next`
    - Reinstall dependencies: `bun install`
    - Check Node.js version (18.0.0+)
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
