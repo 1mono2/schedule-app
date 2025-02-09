@@ -25,22 +25,30 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
    - Add `http://localhost:3000/api/auth/callback/google` to Authorized redirect URIs
    - Save your Client ID and Client Secret
 
-3. **Environment Variables**
-   Create a `.env.local` file in the root directory with the following:
+3. **Supabase and Docker Setup**
+   - Install Docker Desktop from https://www.docker.com/products/docker-desktop
+   - Install Supabase CLI:
+     ```bash
+     bun install supabase --global
+     ```
+   - Start Supabase services:
+     ```bash
+     supabase start
+     ```
 
-```bash
-# App Configuration
-NODE_ENV=development
-PORT=3000
-
-# Database
-POSTGRES_URL=postgresql://user:password@localhost:5432/dbname
-
-# Authentication
-AUTH_SECRET=generate_a_random_32_char_string  # Use `openssl rand -base64 32` to generate
-AUTH_GOOGLE_ID=your_google_oauth_client_id
-AUTH_GOOGLE_SECRET=your_google_oauth_client_secret
-```
+4. **Environment Variables**
+   - Copy the sample environment file:
+     ```bash
+     cp .env.sample .env.local
+     ```
+   - Generate AUTH_SECRET:
+     ```bash
+     bunx auth secrets
+     ```
+   - Update the following in `.env.local`:
+     - `AUTH_SECRET`: Paste the generated secret from `bunx auth secrets`
+     - `AUTH_GOOGLE_ID`: Your Google OAuth Client ID
+     - `AUTH_GOOGLE_SECRET`: Your Google OAuth Client Secret
 
 ### Installation and Development
 
