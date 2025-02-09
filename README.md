@@ -2,35 +2,99 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, install dependencies using [Bun](https://bun.sh):
+### Prerequisites
 
+1. Install [Bun](https://bun.sh) as the package manager
+2. Node.js 18.0.0 or higher is required
+3. PostgreSQL database (version 12 or higher)
+4. Google Cloud Console account for OAuth setup
+
+### Initial Setup
+
+1. **PostgreSQL Setup**
+   - Install PostgreSQL on your system
+   - Create a new database for the application
+   - Note down your connection string in format: `postgresql://user:password@localhost:5432/dbname`
+
+2. **Google OAuth Setup**
+   - Go to Google Cloud Console
+   - Create a new project
+   - Enable the Google+ API
+   - Create OAuth 2.0 credentials (Web application type)
+   - Add `http://localhost:3000` to Authorized JavaScript origins
+   - Add `http://localhost:3000/api/auth/callback/google` to Authorized redirect URIs
+   - Save your Client ID and Client Secret
+
+3. **Environment Variables**
+   Create a `.env.local` file in the root directory with the following:
+
+```bash
+# App Configuration
+NODE_ENV=development
+PORT=3000
+
+# Database
+POSTGRES_URL=postgresql://user:password@localhost:5432/dbname
+
+# Authentication
+AUTH_SECRET=generate_a_random_32_char_string  # Use `openssl rand -base64 32` to generate
+AUTH_GOOGLE_ID=your_google_oauth_client_id
+AUTH_GOOGLE_SECRET=your_google_oauth_client_secret
+```
+
+### Installation and Development
+
+1. Install dependencies:
 ```bash
 bun install
 ```
 
-To run linting:
-
+2. Run the development server:
 ```bash
-bun run lint
+bun dev  # Uses turbopack for faster development
 ```
 
-First, run the development server:
+3. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+### Available Commands
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun dev          # Start development server with turbopack
+bun run build    # Create production build
+bun start        # Start production server
+bun run lint     # Run ESLint for code linting
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Project Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+schedule-app/
+├── app/                # Next.js app directory (pages and components)
+├── docs/              # Project documentation
+├── public/            # Static files
+├── .env.local         # Local environment variables (create this)
+├── next.config.ts     # Next.js configuration
+├── tailwind.config.ts # Tailwind CSS configuration
+├── eslint.config.mjs  # ESLint configuration
+└── tsconfig.json      # TypeScript configuration
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Troubleshooting
+
+1. **Database Connection Issues**
+   - Verify PostgreSQL is running
+   - Check POSTGRES_URL format in .env.local
+   - Ensure database exists and is accessible
+
+2. **Authentication Issues**
+   - Verify Google OAuth credentials
+   - Check redirect URIs in Google Console
+   - Ensure AUTH_SECRET is properly set
+
+3. **Development Server Issues**
+   - Clear .next directory: `rm -rf .next`
+   - Reinstall dependencies: `bun install`
+   - Check Node.js version (18.0.0+)
 
 ## Learn More
 
