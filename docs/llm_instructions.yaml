@@ -8,7 +8,8 @@ llm_instructions:
     - "If the error still persists after that, escalate the issue to a human for resolution."
   project_overview:
     file_structure:
-      note: "Always maintain an awareness of the project's entire file structure. Exclude large package directories such as node_modules and .next from consideration."
+      note: "Always maintain an awareness of the project's entire file structure."
+      command: "tree -I 'node_modules|.next'"
   code_references:
     guidelines_files:
       - "docs/guidelines/coding_guidelines.yaml"
