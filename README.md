@@ -6,26 +6,52 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 1. Install [Bun](https://bun.sh) as the package manager
 2. Node.js 18.0.0 or higher is required
-3. PostgreSQL database (version 12 or higher)
+3. Docker Desktop for Supabase local development
 4. Google Cloud Console account for OAuth setup
+5. Microsoft Azure account for OAuth setup (optional)
 
 ### Initial Setup
 
-1. **PostgreSQL Setup**
-   - Install PostgreSQL on your system
-   - Create a new database for the application
-   - Note down your connection string in format: `postgresql://user:password@localhost:5432/dbname`
+1. **Supabase and Docker Setup**
+   - Install Docker Desktop from https://www.docker.com/products/docker-desktop
+   - Install Supabase CLI:
+     ```bash
+     bun install supabase --global
+     ```
+   - Start Supabase services:
+     ```bash
+     supabase start
+     ```
+   - Note: This will set up a local PostgreSQL database through Supabase
 
-2. **Google OAuth Setup**
+2. **Authentication Setup**
    - Go to Google Cloud Console
    - Create a new project
    - Enable the Google+ API
    - Create OAuth 2.0 credentials (Web application type)
    - Add `http://localhost:3000` to Authorized JavaScript origins
    - Add `http://localhost:3000/api/auth/callback/google` to Authorized redirect URIs
-   - Save your Client ID and Client Secret
+   - Save your Google OAuth Client ID and Client Secret
 
-3. **Supabase and Docker Setup**
+3. **Environment Setup**
+   - Copy the sample environment file:
+     ```bash
+     cp .env.sample .env.local
+     ```
+   - Generate AUTH_SECRET:
+     ```bash
+     bunx auth secrets
+     ```
+   - Update the following in `.env.local`:
+     - `NODE_ENV`: Set to "development"
+     - `PORT`: Default is 3000
+     - `AUTH_SECRET`: Paste the generated secret from `bunx auth secrets`
+     - `AUTH_GOOGLE_ID`: Your Google OAuth Client ID
+     - `AUTH_GOOGLE_SECRET`: Your Google OAuth Client Secret
+     - `AUTH_MICROSOFT_ID`: (Optional) Your Microsoft Azure Application ID
+     - `AUTH_MICROSOFT_SECRET`: (Optional) Your Microsoft Azure Client Secret
+
+   Note: The Supabase connection URL will be automatically set up when running `supabase start`
    - Install Docker Desktop from https://www.docker.com/products/docker-desktop
    - Install Supabase CLI:
      ```bash
@@ -78,14 +104,24 @@ bun run lint     # Run ESLint for code linting
 ```
 schedule-app/
 ├── app/                # Next.js app directory (pages and components)
+├── components/         # shadcn/ui components
 ├── docs/              # Project documentation
 ├── public/            # Static files
+├── server/            # Hono serverless functions
 ├── .env.local         # Local environment variables (create this)
 ├── next.config.ts     # Next.js configuration
 ├── tailwind.config.ts # Tailwind CSS configuration
 ├── eslint.config.mjs  # ESLint configuration
 └── tsconfig.json      # TypeScript configuration
 ```
+
+### Tech Stack
+
+- **Frontend**: Next.js with shadcn/ui components
+- **Database**: Supabase (PostgreSQL)
+- **Authentication**: Supabase Auth with Google and Microsoft OAuth
+- **Runtime**: Bun
+- **API**: Hono serverless functions
 
 ### Troubleshooting
 
