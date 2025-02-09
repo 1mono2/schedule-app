@@ -2,35 +2,143 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, install dependencies using [Bun](https://bun.sh):
+### Prerequisites
 
+1. Install [Bun](https://bun.sh) as the package manager
+2. Node.js 18.0.0 or higher is required
+3. Docker Desktop for Supabase local development
+4. Google Cloud Console account for OAuth setup
+5. Microsoft Azure account for OAuth setup (optional)
+
+### Initial Setup
+
+1. **Supabase and Docker Setup**
+   - Install Docker Desktop from https://www.docker.com/products/docker-desktop
+   - Install Supabase CLI:
+     ```bash
+     bun install supabase --global
+     ```
+   - Start Supabase services:
+     ```bash
+     supabase start
+     ```
+   - Note: This will set up a local PostgreSQL database through Supabase
+
+2. **Authentication Setup**
+   - Go to Google Cloud Console
+   - Create a new project
+   - Enable the Google+ API
+   - Create OAuth 2.0 credentials (Web application type)
+   - Add `http://localhost:3000` to Authorized JavaScript origins
+   - Add `http://localhost:3000/api/auth/callback/google` to Authorized redirect URIs
+   - Save your Google OAuth Client ID and Client Secret
+
+3. **Environment Setup**
+   - Copy the sample environment file:
+     ```bash
+     cp .env.sample .env.local
+     ```
+   - Generate AUTH_SECRET:
+     ```bash
+     bunx auth secrets
+     ```
+   - Update the following in `.env.local`:
+     - `NODE_ENV`: Set to "development"
+     - `PORT`: Default is 3000
+     - `AUTH_SECRET`: Paste the generated secret from `bunx auth secrets`
+     - `AUTH_GOOGLE_ID`: Your Google OAuth Client ID
+     - `AUTH_GOOGLE_SECRET`: Your Google OAuth Client Secret
+     - `AUTH_MICROSOFT_ID`: (Optional) Your Microsoft Azure Application ID
+     - `AUTH_MICROSOFT_SECRET`: (Optional) Your Microsoft Azure Client Secret
+
+   Note: The Supabase connection URL will be automatically set up when running `supabase start`
+   - Install Docker Desktop from https://www.docker.com/products/docker-desktop
+   - Install Supabase CLI:
+     ```bash
+     bun install supabase --global
+     ```
+   - Start Supabase services:
+     ```bash
+     supabase start
+     ```
+
+4. **Environment Variables**
+   - Copy the sample environment file:
+     ```bash
+     cp .env.sample .env.local
+     ```
+   - Generate AUTH_SECRET:
+     ```bash
+     bunx auth secrets
+     ```
+   - Update the following in `.env.local`:
+     - `AUTH_SECRET`: Paste the generated secret from `bunx auth secrets`
+     - `AUTH_GOOGLE_ID`: Your Google OAuth Client ID
+     - `AUTH_GOOGLE_SECRET`: Your Google OAuth Client Secret
+
+### Installation and Development
+
+1. Install dependencies:
 ```bash
 bun install
 ```
 
-To run linting:
-
+2. Run the development server:
 ```bash
-bun run lint
+bun dev  # Uses turbopack for faster development
 ```
 
-First, run the development server:
+3. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+### Available Commands
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun dev          # Start development server with turbopack
+bun run build    # Create production build
+bun start        # Start production server
+bun run lint     # Run ESLint for code linting
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Project Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+schedule-app/
+├── app/                # Next.js app directory (pages and components)
+├── components/         # shadcn/ui components
+├── docs/              # Project documentation
+├── public/            # Static files
+├── server/            # Hono serverless functions
+├── .env.local         # Local environment variables (create this)
+├── next.config.ts     # Next.js configuration
+├── tailwind.config.ts # Tailwind CSS configuration
+├── eslint.config.mjs  # ESLint configuration
+└── tsconfig.json      # TypeScript configuration
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Tech Stack
+
+- **Frontend**: Next.js with shadcn/ui components
+- **Database**: Supabase (PostgreSQL)
+- **Authentication**: Supabase Auth with Google and Microsoft OAuth
+- **Runtime**: Bun
+- **API**: Hono serverless functions
+
+### Troubleshooting
+
+1. **Database Connection Issues**
+   - Verify PostgreSQL is running
+   - Check POSTGRES_URL format in .env.local
+   - Ensure database exists and is accessible
+
+2. **Authentication Issues**
+   - Verify Google OAuth credentials
+   - Check redirect URIs in Google Console
+   - Ensure AUTH_SECRET is properly set
+
+3. **Development Server Issues**
+   - Clear .next directory: `rm -rf .next`
+   - Reinstall dependencies: `bun install`
+   - Check Node.js version (18.0.0+)
 
 ## Learn More
 
