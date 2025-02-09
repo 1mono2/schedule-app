@@ -10,6 +10,9 @@ llm_instructions:
     file_structure:
       note: "Always maintain an awareness of the project's entire file structure."
       command: "tree -I 'node_modules|.next'"
+  setup_instructions:
+      location: "README.md"
+      description: "The detailed steps for setting up the environment, dependencies, and required environment variables are available in README.md."
   code_references:
     guidelines_files:
       - "docs/guidelines/coding_guidelines.yaml"

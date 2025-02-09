@@ -1,36 +1,78 @@
-domain_driven_design:
-  overview: >
-    ドメイン駆動設計 (DDD: Domain Driven Design) は、ソフトウェア開発において複雑なビジネス領域（ドメイン）の知識を中心にシステム設計を行うアプローチです。ドメインの深い理解とその知識の反映を重視し、システム全体を柔軟かつ保守しやすい形に構築することを目的としています。
-    
-  core_concepts:
-    domain: >
-      システムが解決すべきビジネスの問題領域全体を指し、ビジネスルールや知識が集約される部分です。
-    ubiquitous_language: >
-      開発者とドメインエキスパートが共通して使用する言葉や用語。コードやドキュメントにこの共通言語が反映されることで、正確なコミュニケーションと理解が促進されます。
-    bounded_context: >
-      システムを分割するための明確な境界線。各コンテキスト内で独自のモデルや言語が定義され、異なるコンテキスト間では変換や連携が必要となります.
+# DDDを採用したカレンダー設定アプリケーションの簡易アーキテクチャ構成例
 
-  building_blocks:
-    entities:
+DDD:
+  framework: "Next.js (API Router Only)"
+  architecture: "Onion Architecture"
+  description: >
+    このサンプルは、あくまでもDDDの概念を理解するためのものです。あなたが必要だと思えば、ファイル構成を変更しても構いません。
+  layers:
+    domain:
       description: >
-        識別可能なオブジェクトで、固有のIDを持ち、ライフサイクル全体にわたって同一性が保証されるものです。
-    value_objects:
+        カレンダー設定に関するドメインモデルとビジネスロジックを含みます。
+        エンティティ、値オブジェクト、ドメインイベント、および関連サービスがこのファイル下に配置されます。
+      path: "./src/domain"
+      files_example:
+        - CalendarSettings.ts: "カレンダー設定のエンティティ、値オブジェクト、ドメインイベントを含む"
+        - CalendarDomainService.ts: "カレンダー設定に関するビジネスロジック"
+      tests: "コア部分のユニットテストは同一ディレクトリ内に配置 (例: CalendarSettings.test.ts)"
+    use_case:
       description: >
-        識別子を持たず、属性の集合として同一性が決まるオブジェクト。通常は不変（immutable）として設計されます。
-    aggregates:
+        ドメイン層のモデルやサービスを利用して、カレンダー設定の更新や取得などのユースケースを実現します。
+        DTOもここで定義し、処理をシンプルにまとめます。
+      path: "./src/use_case"
+      files_example:
+        - CalendarSettingsHandler.ts: "カレンダー設定の取得および更新のユースケース処理とDTOを含む"
+      tests: "ユースケース層のユニットテストは同一ディレクトリ内に配置 (例: CalendarSettingsHandler.test.ts)"
+    presentation:
       description: >
-        関連するエンティティや値オブジェクトの集合体。1つのルートエンティティ（aggregate root）を介して外部からの操作が行われ、一貫性の境界となります。
-    repositories:
+        Next.js の APIルーターを用いて、HTTPリクエストの受け口となり、ユースケース層へリクエストを転送します。
+      path: "./src/presentation"
+      files_example:
+        - settings.ts: "カレンダー設定のAPIエンドポイント"
+      tests: "APIエンドポイントのユニットテストは同一ディレクトリ内に配置 (例: settings.test.ts)"
+    infrastructure:
       description: >
-        エンティティや集約を永続化し、取得するためのインターフェース。ドメインロジックとインフラストラクチャの橋渡しを担います。
-    domain_services:
-      description: >
-        複数のエンティティや値オブジェクトにまたがるビジネスロジックを提供するサービス。状態を持たず、特定の操作や計算を行います。
-    factories:
-      description: >
-        複雑なオブジェクトや集約の生成ロジックを隠蔽するための仕組み。適切な初期化や依存関係の管理を行います.
+        外部システムとの連携やデータ永続化処理を担います。
+        ドメイン層で定義したリポジトリの実装など、永続化処理をまとめます。
+      path: "./src/infrastructure"
+      files_example:
+        - CalendarSettingsRepository.ts: "カレンダー設定の永続化処理（DBとのCRUD処理）"
+      tests: >
+        基本的なユニットテストは同一ディレクトリ内に配置 (例: CalendarSettingsRepository.test.ts) しつつ、
+        複数層にまたがる連携部分のテストはトップレベルの tests ディレクトリで管理します。
 
-  benefits:
-    - 複雑なビジネスドメインの理解が深まり、適切なモデル化が可能になる
-    - ドメインエキスパートと開発者間のコミュニケーションが円滑になり、共通言語が浸透する
-    - 柔軟で保守性の高いシステム構築が促進され、将来的な拡張や変更に対応しやすい
+tests:
+  description: >
+    ハイブリッドアプローチを採用しています。
+    1. ドメイン層やユースケース層などのコア部分のユニットテストは、実装コードと同じディレクトリに配置（コロケーション）し、意図や振る舞いを明示します。
+    2. インフラ層の統合テストや API エンドポイントのエンドツーエンド (E2E) テストなど、複数層や外部連携を検証するテストは、
+       プロジェクトルート直下の tests ディレクトリ内に配置します。
+  structure_example:
+    - src/domain/CalendarSettings.test.ts        # ドメイン層のユニットテスト（コロケーション）
+    - src/use_case/CalendarSettingsHandler.test.ts # ユースケース層のユニットテスト（コロケーション）
+    - src/presentation/settings.test.ts            # APIエンドポイントのユニットテスト（コロケーション）
+    - src/infrastructure/CalendarSettingsRepository.test.ts  # インフラ層の基本的なユニットテスト
+    - tests/integration/settings.integration.test.ts          # 統合テスト (複数層の連携検証)
+    - tests/e2e/e2e.test.ts                                     # エンドツーエンドテスト
+
+repository_structure_example:
+  project_root:
+    ├─ src/
+    │  ├─ domain/
+    │  │    ├─ CalendarSettings.ts
+    │  │    ├─ CalendarDomainService.ts
+    │  │    └─ CalendarSettings.test.ts         # ドメイン層ユニットテスト (コロケーション)
+    │  ├─ use_case/
+    │  │    ├─ CalendarSettingsHandler.ts
+    │  │    └─ CalendarSettingsHandler.test.ts    # ユースケース層ユニットテスト (コロケーション)
+    │  ├─ presentation/
+    │  │    ├─ settings.ts
+    │  │    └─ settings.test.ts                   # プレゼンテーション層ユニットテスト (コロケーション)
+    │  └─ infrastructure/
+    │         ├─ CalendarSettingsRepository.ts
+    │         └─ CalendarSettingsRepository.test.ts  # インフラ層ユニットテスト (コロケーション)
+    └─ tests/
+         ├─ integration/
+         │    └─ settings.integration.test.ts     # 統合テスト (複数層・外部連携検証)
+         └─ e2e/
+              └─ e2e.test.ts                      # エンドツーエンドテスト
