@@ -30,6 +30,16 @@ multi-organization membership, complex scheduling condition settings, and API/We
      ```
    - Note: This will set up a local PostgreSQL database through Supabase
 
+   - Run database migrations:
+     ```bash
+     # Create a new migration file which is created by drizzle-kit
+     bun run db:generate
+
+     # Apply all pending migrations
+     supabase migration up
+     ```
+   - Note: Migration files are stored in the `supabase/migrations` directory
+
 2. **Authentication Setup**
    - Go to Google Cloud Console
    - Create a new project
