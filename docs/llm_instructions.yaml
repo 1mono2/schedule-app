@@ -10,13 +10,19 @@ llm_instructions:
     file_structure:
       note: "Always maintain an awareness of the project's entire file structure."
       command: "tree -I 'node_modules|.next'"
-  setup_instructions:
+  guidelines:
+    setup_instructions:
       location: "README.md"
       description: "The detailed steps for setting up the environment, dependencies, and required environment variables are available in README.md."
-  code_references:
-    guidelines_files:
-      - "docs/guidelines/coding_guidelines.yaml"
-      - "docs/guidelines/domain_driven_design_guidelines.yaml"
-      - "docs/guidelines/testing_guidelines.yml"
-      - "docs/guidelines/test_driven_development_guidelines.yaml"
-      - "docs/guidelines/git_branch_strategy.yaml"
+    coding_guidelines:
+      description: "Based on Google's naming conventions, maintain consistency throughout the project and facilitate maintenance"
+      details_location: "docs/guidelines/coding_guidelines.yaml"
+    domain_driven_design_guidelines:
+      description: "When implementing backend processing using Next.js API Router, please develop following Domain Driven Design (DDD)"
+      details_location: "docs/guidelines/domain_driven_design_guidelines.yaml"
+    testing_guidelines:
+      description: "Write tests using Vitest"
+      details_location: "docs/guidelines/testing_guidelines.yaml"
+    test_driven_development_guidelines:
+      description: "Test Driven Development (TDD) is a software development approach where you first create test cases, verify they fail, implement minimal code to pass the tests, and then continuously refactor while implementing functionality."
+      details_location: "docs/guidelines/test_driven_development_guidelines.yaml"

@@ -7,11 +7,6 @@ project_overview:
   description: >
     GoogleとMicrosoftのログイン認証、カレンダー連携、複数組織への所属、複雑な日程調整条件設定、
     APIおよびWebhook連携などを備えた日程調整アプリです。将来的に有償プランへの拡張も視野に入れた設計とします。
-  target_users:
-    - role: Admin
-      description: 組織設定やユーザー管理など、組織に関する操作が可能なユーザー
-    - role: member
-      description: 日程調整機能など、一般的な利用を行うユーザー
 
 security:
   login_authentication:
@@ -21,7 +16,9 @@ security:
   user_permissions:
     roles:
       Admin: "組織設定、ユーザー管理などの操作が可能"
-      member: "基本的な日程調整等の機能利用"
+      Member: "基本的な日程調整等の機能利用"
+    rbac: true
+    description: "RBAC（ロールベースアクセス制御）を採用。各操作ごとに必要な権限を明示し、システム内で厳格に制御することで、「最小権限の原則」を実現します。例えば、APIエンドポイントごと、またはフロントエンドのUIコンポーネントごとにアクセス可能な役割を明確に分ける設計が求められます。"
   calendar_integration:
     providers:
       - Google Calendar
