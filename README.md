@@ -1,129 +1,111 @@
-# Schedule App
+# スケジュールアプリ
 
-## Overview
-A scheduling application featuring Google and Microsoft login authentication, calendar integration, 
-multi-organization membership, complex scheduling condition settings, and API/Webhook integration capabilities.
+## 概要
+Google・Microsoft認証、カレンダー統合、複数組織メンバーシップ、複雑なスケジューリング条件設定、API・Webhook統合機能を備えたスケジューリングアプリケーションです。
 
-## Getting Started
+## はじめに
 
-### Prerequisites
+### 前提条件
 
-1. Install [Bun](https://bun.sh) as the package manager
-2. Node.js 18.0.0 or higher is required
-3. Docker Desktop for Supabase local development
-4. Google Cloud Console account for OAuth setup
-5. Microsoft Azure account for OAuth setup (optional)
+1. パッケージマネージャーとして [Bun](https://bun.sh) をインストール
+2. Node.js 18.0.0 以上が必要
+3. Supabaseローカル開発用のDocker Desktop
+4. OAuth設定用のGoogle Cloud Consoleアカウント
+5. OAuth設定用のMicrosoft Azureアカウント（オプション）
 
-### Initial Setup
+### 初期設定
 
-1. **Supabase and Docker Setup**
-   - Install Docker Desktop from https://www.docker.com/products/docker-desktop
-   - Install Supabase CLI:
+1. **Supabase・Docker セットアップ**
+   - Docker Desktopを https://www.docker.com/products/docker-desktop からインストール
+   - Supabase CLIをインストール:
      ```bash
      bun install supabase --global
      ```
      
-     For other installation methods, please check [this link](https://supabase.com/docs/guides/local-development/cli/getting-started?queryGroups=platform&platform=macos&queryGroups=access-method&access-method=postgres)
-   - Start Supabase services:
+     その他のインストール方法については[こちらのリンク](https://supabase.com/docs/guides/local-development/cli/getting-started?queryGroups=platform&platform=macos&queryGroups=access-method&access-method=postgres)をご確認ください
+   - Supabaseサービスを開始:
      ```bash
      supabase start
      ```
-   - Note: This will set up a local PostgreSQL database through Supabase
+   - 注意：これによりSupabaseを通じてローカルPostgreSQLデータベースが設定されます
 
-   - Run database migrations:
+   - データベースマイグレーションを実行:
      ```bash
-     # Create a new migration file which is created by drizzle-kit
+     # drizzle-kitによって作成される新しいマイグレーションファイルを作成
      bun run db:generate
 
-     # Apply all pending migrations
+     # 保留中のマイグレーションをすべて適用
      supabase migration up
      ```
-   - Note: Migration files are stored in the `supabase/migrations` directory
+   - 注意：マイグレーションファイルは `supabase/migrations` ディレクトリに保存されます
 
-2. **Authentication Setup**
-   - Go to Google Cloud Console
-   - Create a new project
-   - Enable the Google+ API
-   - Create OAuth 2.0 credentials (Web application type)
-   - Add `http://localhost:3000` to Authorized JavaScript origins
-   - Add `http://localhost:3000/api/auth/callback/google` to Authorized redirect URIs
-   - Save your Google OAuth Client ID and Client Secret
+2. **認証設定**
+   - Google Cloud Consoleにアクセス
+   - 新しいプロジェクトを作成
+   - Google+ APIを有効化
+   - OAuth 2.0認証情報を作成（Webアプリケーションタイプ）
+   - 認証済みのJavaScript生成元に `http://localhost:3000` を追加
+   - 認証済みのリダイレクトURIに `http://localhost:3000/api/auth/callback/google` を追加
+   - Google OAuth クライアントIDとクライアントシークレットを保存
 
-3. **Environment Setup**
-   - Copy the sample environment file:
+3. **環境設定**
+   - サンプル環境ファイルをコピー:
      ```bash
      cp .env.sample .env.local
      ```
-   - Generate AUTH_SECRET:
+   - AUTH_SECRETを生成:
      ```bash
      bunx auth secret
      ```
-   - Update the following in `.env.local`:
-     - `NODE_ENV`: Set to "development"
-     - `PORT`: Default is 3000
-     - `AUTH_SECRET`: Paste the generated secret from `bunx auth secret`
-     - `AUTH_GOOGLE_ID`: Your Google OAuth Client ID
-     - `AUTH_GOOGLE_SECRET`: Your Google OAuth Client Secret
-     - `AUTH_MICROSOFT_ID`: (Optional) Your Microsoft Azure Application ID
-     - `AUTH_MICROSOFT_SECRET`: (Optional) Your Microsoft Azure Client Secret
+   - `.env.local`で以下を更新:
+     - `NODE_ENV`: "development"に設定
+     - `PORT`: デフォルトは3000
+     - `AUTH_SECRET`: `bunx auth secret`で生成されたシークレットを貼り付け
+     - `AUTH_GOOGLE_ID`: あなたのGoogle OAuth クライアントID
+     - `AUTH_GOOGLE_SECRET`: あなたのGoogle OAuth クライアントシークレット
+     - `AUTH_MICROSOFT_ID`: （オプション）あなたのMicrosoft Azure アプリケーションID
+     - `AUTH_MICROSOFT_SECRET`: （オプション）あなたのMicrosoft Azure クライアントシークレット
 
-### Installation and Development
+### インストールと開発
 
-1. Install dependencies:
+1. 依存関係をインストール:
 ```bash
 bun install
 ```
 
-2. Run the development server:
+2. 開発サーバーを起動:
 ```bash
-bun dev  # Uses turbopack for faster development
+bun dev  # より高速な開発のためturbopackを使用
 ```
 
-3. Open [http://localhost:3000](http://localhost:3000) in your browser
+3. ブラウザで [http://localhost:3000](http://localhost:3000) を開く
 
-### Available Commands
+### 利用可能なコマンド
 
 ```bash
-bun dev          # Start development server with turbopack
-bun run build    # Create production build
-bun start        # Start production server
-bun run lint     # Run Biome.js for code linting
-bun run format   # Run Biome.js for code linting & formatting
+bun dev          # turbopackで開発サーバーを開始
+bun run build    # 本番ビルドを作成
+bun start        # 本番サーバーを開始
+bun run lint     # Biome.jsでコードリンティングを実行
+bun run format   # Biome.jsでコードリンティング・フォーマットを実行
 ```
 
-### Project Structure
+### プロジェクト構造
 
 ```
 schedule-app/
-├── app/                # Next.js app directory (pages and components)
-├── components/         # shadcn/ui components
-├── docs/               # Project documentation for LLM(AI Agent)
-│   └── guidelines/     # Guidelines for LLM(AI Agent) ex: coding standards, best practices, etc.
-│   └── requirements/   # Requirements
-└──  public/            # Static files
+├── app/                # Next.js appディレクトリ（ページとコンポーネント）
+├── components/         # shadcn/ui コンポーネント
+├── docs/               # LLM（AIエージェント）用プロジェクトドキュメント
+│   └── guidelines/     # LLM（AIエージェント）用ガイドライン（コーディング規約、ベストプラクティスなど）
+│   └── requirements/   # 要件
+└──  public/            # 静的ファイル
 ```
 
-### Tech Stack
+### 技術スタック
 
-- **Frontend**: Next.js with shadcn/ui components
-- **Database**: Supabase (PostgreSQL)
-- **Authentication**: Supabase Auth with Google and Microsoft OAuth
-- **Runtime**: Bun
-- **API**: Hono serverless functions
-
-### Troubleshooting
-
-1. **Database Connection Issues**
-   - Verify PostgreSQL is running
-   - Check POSTGRES_URL format in .env.local
-   - Ensure database exists and is accessible
-
-2. **Authentication Issues**
-   - Verify Google OAuth credentials
-   - Check redirect URIs in Google Console
-   - Ensure AUTH_SECRET is properly set
-
-3. **Development Server Issues**
-   - Clear .next directory: `rm -rf .next`
-   - Reinstall dependencies: `bun install`
-   - Check Node.js version (18.0.0+)
+- **フロントエンド**: shadcn/uiコンポーネント付きNext.js
+- **データベース**: Supabase（PostgreSQL）
+- **認証**: Google・Microsoft OAuthを使用したSupabase Auth
+- **ランタイム**: Bun
+- **API**: Honoサーバーレス関数
